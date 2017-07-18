@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "A mock implementation of eq-author-graphql-schema",
   "main": "index.js",
-  "author": "eQ Tean",
-  "license": "MIT"
+  "author": "eQ Team",
+  "license": "MIT",
+  "dependencies": {
+    "eq-author-graphql-schema": "https://github.com/ONSdigital/eq-author-graphql-schema.git",
+    "graphql": "^0.10.5",
+    "graphql-tools": "^1.1.0"
+  }
 }
