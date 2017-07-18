@@ -1,0 +1,8 @@
+{
+  "name": "eq-author-mock-api",
+  "version": "1.0.0",
+  "description": "A mock implementation of eq-author-graphql-schema",
+  "main": "index.js",
+  "author": "eQ Tean",
+  "license": "MIT"
+}
