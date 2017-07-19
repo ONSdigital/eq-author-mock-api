@@ -127,7 +127,7 @@ describe('mock API', () => {
                 // Because we haven't specified the mock resolver functions the
                 // mock resolver will generate some default data for us.
                 expect(result.title).toEqual('Hello World');
-                expcet([true, false]).toContain(result.navigation);
+                expect([true, false]).toContain(result.navigation);
             });
 
         });
@@ -157,7 +157,42 @@ describe('mock API', () => {
                 const questionnaire = result.data.questionnaires[0];
                 expect(questionnaire.id).toEqual(99);
                 expect(questionnaire.title).toEqual('Survey title');
-                expect(questionnaire.navigation).toBeTrue();
+                expect(questionnaire.navigation).toBe(true);
+            });
+
+        });
+
+    });
+
+    describe('overriding specific resolver functions', () => {
+
+        const mocks = {
+            Query: () => ({
+                questionnaires: () => [{
+                    id: 1,
+                    title: "something",
+                    navigation: false
+                }]
+            })
+        };
+
+        const server = mockServer(schema, mocks);
+
+        it('should be possible to override the default built-in types', () => {
+            const query = `{
+                questionnaires {
+                    id
+                    title
+                    navigation
+                }
+            }`;
+
+            server.query(query).then(result => {
+                const questionnaire = result.data.questionnaires[0];
+
+                expect(questionnaire.id).toEqual(1);
+                expect(questionnaire.title).toEqual("something");
+                expect(questionnaire.navigation).toBe(false);
             });
 
         });
