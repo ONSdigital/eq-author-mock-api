@@ -1,5 +1,7 @@
 const schema = require('eq-author-graphql-schema/schema');
 
+const merge = require('lodash').merge;
+
 const mockServer = require('./index').mockServer;
 
 describe('mock API', () => {
@@ -20,6 +22,8 @@ describe('mock API', () => {
 
                 expect(result.questionnaires).toHaveLength(2);
                 expect(result.questionnaires[0].title).toEqual("Hello World");
+            }).catch(e => {
+                console.error(e);
             });
         });
 
@@ -77,6 +81,8 @@ describe('mock API', () => {
                 const mockPageType = sections[0].pages[0].pageType;
                 expect(validPageTypes).toContain(mockPageType);
 
+            }).catch(e => {
+                console.error(e);
             });
 
         });
@@ -128,6 +134,8 @@ describe('mock API', () => {
                 // mock resolver will generate some default data for us.
                 expect(result.title).toEqual('Hello World');
                 expect([true, false]).toContain(result.navigation);
+            }).catch(e => {
+                console.error(e);
             });
 
         });
@@ -158,6 +166,8 @@ describe('mock API', () => {
                 expect(questionnaire.id).toEqual(99);
                 expect(questionnaire.title).toEqual('Survey title');
                 expect(questionnaire.navigation).toBe(true);
+            }).catch(e => {
+                console.error(e);
             });
 
         });
@@ -193,6 +203,72 @@ describe('mock API', () => {
                 expect(questionnaire.id).toEqual(1);
                 expect(questionnaire.title).toEqual("something");
                 expect(questionnaire.navigation).toBe(false);
+            }).catch(e => {
+                console.error(e);
+            });
+
+        });
+
+    });
+
+    describe('accessing variables in mocks', () => {
+
+        const mocks = {
+            Mutation: () => ({
+                updateQuestionnaire: (root, args, ctx) => {
+                    return merge({}, args);
+                }
+            })
+        };
+
+        const server = mockServer(schema, mocks);
+
+        it('should be possible to access variables in the mock resolvers', () => {
+
+            const query = `
+                mutation UpdateQuestionnaire(
+                    $id: Int!
+                    $title: String!
+                    $description: String!
+                    $surveyId: String!
+                    $theme: String!
+                    $legalBasis: LegalBasis!
+                    $navigation: Boolean
+                  ) {
+                    updateQuestionnaire(
+                      id: $id
+                      title: $title
+                      description: $description
+                      surveyId: $surveyId
+                      theme: $theme
+                      legalBasis: $legalBasis
+                      navigation: $navigation
+                    ) {
+                      id
+                      title
+                      description
+                      surveyId
+                      theme
+                      legalBasis
+                      navigation
+                    }
+                  }
+            `;
+
+            const vars = {
+                id: 99,
+                title: "test",
+                description: "description",
+                surveyId: "1",
+                theme: "default",
+                legalBasis: "Voluntary"
+            };
+
+            server.query(query, vars).then(r => {
+                const result = r.data.updateQuestionnaire;
+                expect(result).toMatchObject(vars);
+            }).catch(e => {
+                console.error(e);
             });
 
         });
