@@ -5,10 +5,16 @@
   "main": "index.js",
   "author": "eQ Team",
   "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "eq-author-graphql-schema": "https://github.com/ONSdigital/eq-author-graphql-schema.git",
     "graphql": "^0.10.5",
     "graphql-tools": "^1.1.0",
     "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "jest": "^20.0.4"
   }
 }
