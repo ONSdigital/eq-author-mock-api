@@ -1,10 +1,16 @@
 const schema = require('eq-author-graphql-schema/schema');
 
-const merge = require('lodash').merge;
+const { merge } = require('lodash');
+const { mockServer } = require('graphql-tools');
 
-const mockServer = require('./index').mockServer;
+const { MockNetworkInterface } = require('./index');
 
 describe('mock API', () => {
+
+    it('should be possible to create a mock network interface', () => {
+        const networkInterface = new MockNetworkInterface(schema);
+        expect(networkInterface).toBeInstanceOf(MockNetworkInterface);
+    });
 
     describe('no overridden behaviours', () => {
 

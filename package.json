@@ -11,6 +11,7 @@
   "dependencies": {
     "eq-author-graphql-schema": "https://github.com/ONSdigital/eq-author-graphql-schema.git",
     "graphql": "^0.10.5",
+    "graphql-tag": "^2.4.2",
     "graphql-tools": "^1.1.0",
     "lodash": "^4.17.4"
   },

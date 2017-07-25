@@ -1,3 +1,3 @@
-const mockServer = require('graphql-tools').mockServer;
+const MockNetworkInterface = require('./src/MockNetworkInterface');
 
-module.exports = { mockServer }
+module.exports = { MockNetworkInterface };
