@@ -1,10 +1,16 @@
 const schema = require('eq-author-graphql-schema/schema');
 
-const merge = require('lodash').merge;
+const { merge } = require('lodash');
+const { mockServer } = require('graphql-tools');
 
-const mockServer = require('./index').mockServer;
+const { MockNetworkInterface } = require('./index');
 
 describe('mock API', () => {
+
+    it('should be possible to create a mock network interface', () => {
+        const networkInterface = new MockNetworkInterface(schema);
+        expect(networkInterface).toBeInstanceOf(MockNetworkInterface);
+    });
 
     describe('no overridden behaviours', () => {
 
@@ -17,14 +23,12 @@ describe('mock API', () => {
                 }
             }`;
 
-            server.query(query).then(r => {
+            return server.query(query).then(r => {
                 const result = r.data;
 
                 expect(result.questionnaires).toHaveLength(2);
                 expect(result.questionnaires[0].title).toEqual("Hello World");
-            }).catch(e => {
-                console.error(e);
-            });
+            })
         });
 
         it('should allow default implementation for more complex queries', () => {
@@ -65,7 +69,7 @@ describe('mock API', () => {
                   }
             }`;
 
-            server.query(query, {questionnaireId: 1}).then(r => {
+            return server.query(query, {questionnaireId: 1}).then(r => {
                 const result = r.data;
                 expect(['Voluntary', 'StatisticsOfTradeAct']).toContain(result.questionnaire.legalBasis);
 
@@ -81,9 +85,7 @@ describe('mock API', () => {
                 const mockPageType = sections[0].pages[0].pageType;
                 expect(validPageTypes).toContain(mockPageType);
 
-            }).catch(e => {
-                console.error(e);
-            });
+            })
 
         });
 
@@ -127,16 +129,14 @@ describe('mock API', () => {
                 legalBasis: "Voluntary"
             };
 
-            server.query(query, vars).then(r => {
+            return server.query(query, vars).then(r => {
                 const result = r.data.updateQuestionnaire;
 
                 // Because we haven't specified the mock resolver functions the
                 // mock resolver will generate some default data for us.
                 expect(result.title).toEqual('Hello World');
                 expect([true, false]).toContain(result.navigation);
-            }).catch(e => {
-                console.error(e);
-            });
+            })
 
         });
 
@@ -161,15 +161,12 @@ describe('mock API', () => {
                 }
             }`;
 
-            server.query(query).then(result => {
+            return server.query(query).then(result => {
                 const questionnaire = result.data.questionnaires[0];
                 expect(questionnaire.id).toEqual(99);
                 expect(questionnaire.title).toEqual('Survey title');
                 expect(questionnaire.navigation).toBe(true);
-            }).catch(e => {
-                console.error(e);
             });
-
         });
 
     });
@@ -197,14 +194,12 @@ describe('mock API', () => {
                 }
             }`;
 
-            server.query(query).then(result => {
+            return server.query(query).then(result => {
                 const questionnaire = result.data.questionnaires[0];
 
                 expect(questionnaire.id).toEqual(1);
                 expect(questionnaire.title).toEqual("something");
                 expect(questionnaire.navigation).toBe(false);
-            }).catch(e => {
-                console.error(e);
             });
 
         });
@@ -264,11 +259,9 @@ describe('mock API', () => {
                 legalBasis: "Voluntary"
             };
 
-            server.query(query, vars).then(r => {
+            return server.query(query, vars).then(r => {
                 const result = r.data.updateQuestionnaire;
                 expect(result).toMatchObject(vars);
-            }).catch(e => {
-                console.error(e);
             });
 
         });
