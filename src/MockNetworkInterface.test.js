@@ -1,6 +1,15 @@
 const MockNetworkInterface = require("./MockNetworkInterface");
-const schema = require("eq-author-graphql-schema/schema");
 const gql = require("graphql-tag");
+
+const schema = `
+type Questionnaire {
+    id: Int
+}
+
+type Query {
+    questionnaires: [Questionnaire]
+}
+`;
 
 describe("mock network interface", () => {
 
@@ -16,11 +25,11 @@ describe("mock network interface", () => {
     const api = new MockNetworkInterface(schema);
 
     const query = gql`
-      {
-        questionnaires {
-          id
+        {
+            questionnaires {
+                id
+            }
         }
-      }
     `;
 
     const request = {
