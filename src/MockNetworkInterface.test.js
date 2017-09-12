@@ -1,5 +1,5 @@
 const MockNetworkInterface = require("./MockNetworkInterface");
-const schema = require("eq-author-graphql-schema/schema");
+const schema = require("eq-author-graphql-schema");
 const gql = require("graphql-tag");
 
 describe("mock network interface", () => {
