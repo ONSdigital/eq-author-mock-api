@@ -1,5 +1,7 @@
 # eq-author-mock-api
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ONSdigital/eq-author-mock-api.svg)](https://greenkeeper.io/)
+
 This repository is simply to demonstrate how to use the Apollo `mockServer` implementation to mock out a GraphQL backend API from the [Author GraphQL schema](https://github.com/ONSDigital/eq-author-graphql-schema).
 
 See [index.test.js](https://github.com/ONSDigital/eq-author-mock-api/blob/master/index.test.js) for example use cases.
